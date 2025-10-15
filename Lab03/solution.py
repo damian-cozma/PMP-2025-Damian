@@ -33,10 +33,11 @@ model.add_cpds(cpd_s, cpd_o, cpd_l, cpd_m)
 
 print("Model valid:", model.check_model())
 
-# 1.a
-print("O and L independent given S")
+# 1.a 
+independencies = model.get_independencies()
+print(independencies)
 
-# 1.b - clasificare
+# 1.b 
 
 infer = VariableElimination(model)
 
@@ -51,7 +52,7 @@ for i, evidence in enumerate(test_cases, 1):
     result = infer.query(variables=['S'], evidence=evidence)
     spam_prob = result.values[1]
     classification = "SPAM" if spam_prob > 0.5 else "NON-SPAM"
-    print(f"Case {i}: P(Spam) = {spam_prob:.4f} - {classification}")
+    print(f"Test {i}: P(Spam) = {spam_prob:.4f} - {classification}")
 
 plt.figure(figsize=(8, 6))
 pos = {'S': (0, 0), 'O': (-1, -1), 'L': (1, -1), 'M': (0, -2)}
