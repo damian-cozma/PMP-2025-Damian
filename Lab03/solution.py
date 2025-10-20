@@ -60,3 +60,26 @@ nx.draw(model, pos=pos, with_labels=True, node_size=2000,
         node_color='lightblue', arrowsize=20, font_size=12)
 plt.title("Spam Detection Network")
 plt.show()
+
+print("\n------------ Ex. 2 ------------")
+
+model2 = DiscreteBayesianNetwork([('R', 'C'), ('U', 'C')])
+
+cpd_r = TabularCPD(variable='R', variable_card=2, values=[[0.8], [0.2]])
+cpd_u = TabularCPD(variable='U', variable_card=2, values=[[0.95], [0.05]])
+
+cpd_c = TabularCPD(variable='C', variable_card=2,
+                   values=[[0.8, 0.5, 0.2, 0.0],
+                           [0.2, 0.5, 0.8, 1.0]],
+                   evidence=['U', 'R'],
+                   evidence_card=[2, 2])
+
+model2.add_cpds(cpd_r, cpd_u, cpd_c)
+
+infer2 = VariableElimination(model2)
+result2 = infer2.query(variables=['U'], evidence={'C': 1})
+print("P(U=1|C=1) =", result2.values[1])
+
+# comp cu rezultatul teoretic: 0.14533
+print("Rezultat teoretic: 0.14533")
+print("Diferenta: ", abs(result2.values[1] - 0.14533))
