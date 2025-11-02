@@ -1,8 +1,9 @@
-
 import numpy as np
 import matplotlib.pyplot as plt
 import networkx as nx
 from hmmlearn.hmm import CategoricalHMM
+import math
+
 
 difficulty_states = ["Hard", "Medium", "Easy"]
 grades = ["FB", "B", "S", "NS"]
@@ -66,3 +67,45 @@ plt.ylabel("Difficulty")
 plt.legend()
 plt.tight_layout()
 plt.show()
+
+#bonus
+def log_safe(x):
+    return -math.inf if x <= 0 else math.log(x)
+
+T = len(obs_seq)
+N = len(start_prob)
+
+delta = np.full((T, N), -math.inf)
+psi = np.full((T, N), -1, dtype=int)
+
+first_obs = obs_seq[0, 0]
+for i in range(N):
+    delta[0, i] = log_safe(start_prob[i]) + log_safe(emission_matrix[i, first_obs])
+
+for t in range(1, T):
+    obs_t = obs_seq[t, 0]
+    for j in range(N):
+        best_prev = -1
+        best_val = -math.inf
+        for i in range(N):
+            val = delta[t-1, i] + log_safe(transition_matrix[i, j])
+            if val > best_val:
+                best_val = val
+                best_prev = i
+        delta[t, j] = best_val + log_safe(emission_matrix[j, obs_t])
+        psi[t, j] = best_prev
+
+last_state = int(np.argmax(delta[T-1]))
+log_prob = float(delta[T-1, last_state])
+
+path = [last_state]
+for t in range(T-1, 0, -1):
+    path.append(int(psi[t, path[-1]]))
+path.reverse()
+
+prob_path = math.exp(log_prob)
+
+print("Viterbi states (0=Hard, 1=Medium, 2=Easy):")
+print("Path =", path)
+print(f"P(Bonus Viterbi path) = {prob_path:.6e}")
+
