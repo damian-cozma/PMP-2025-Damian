@@ -45,10 +45,10 @@ print("\nPosterior summaries (Strong Prior):")
 print(summary_strong)
 
 '''
-Priorul puternic pentru mu trage media estimata in jos (de la 58 la ~55-56)
+Priorul puternic pentru mu trage media estimata in jos
 Am observat ca (,) cu cat priorul e mai sigur cu atat influenteaza mai tare rezultatul
 
-Deviatia standard tinde sa creasca usor (de la 1.8 la ~2.4) pentru ca modelul vede ca datele
+Deviatia standard tinde sa creasca usor pentru ca modelul vede ca datele
 nu se potrivesc perfect cu media impusa. Ca sa compenseze diferenta fata de date, creste sigma,
 devenind mai permisiv cu valorile observate
 
