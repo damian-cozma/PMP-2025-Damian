@@ -38,7 +38,7 @@ print(hdi_95)
 
 # c) verificam daca predictorii sunt utili
 # basically: daca intervalele pentru beta1 si beta2 NU includ 0 -> sunt utili
-# (nu mai facem nimic aici, doar se interpreteaza based pe HDI printate)
+# In cazul meu, atat beta1 cat si beta2 au intervale complet pozitive, deci ambele variabile sunt predictori utili ai pretului.
 
 # d) expected price pentru Speed=33, HD=540
 new_speed = 33
